@@ -2,10 +2,6 @@ import { createStyles, css } from "antd-style";
 
 export const useStyles = createStyles({
     nav: css`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,7 +10,6 @@ export const useStyles = createStyles({
     color: white;
     width: 100%;
     box-sizing: border-box;
-    z-index: 1000;
   `,
     logo: css`
     text-decoration: none;
@@ -46,5 +41,14 @@ export const useStyles = createStyles({
     activeLink: css`
     color: #00ADB5;
     font-weight: bold;
+  `,
+    logoutIcon: css`
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    &:hover {
+      color: #00ADB5;
+    }
   `,
 });

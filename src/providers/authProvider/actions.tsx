@@ -49,14 +49,13 @@ export const signupPending = createAction<IAuthStateContext>(
     () => ({ isAuthenticated: false, isPending: true, isError: false, isSuccess: false })
 );
 
-export const signupSuccess = createAction<IAuthStateContext, { token: string; user: IUser }>(
+export const signupSuccess = createAction<IAuthStateContext, { user: IUser }>(
     AuthActionEnums.signupSuccess,
-    ({ token, user }) => ({
-        isAuthenticated: true,
+    ({ user }) => ({
+        isAuthenticated: false,
         isPending: false,
         isError: false,
         isSuccess: true,
-        token,
         user,
         errorMessage: undefined,
     })

@@ -4,6 +4,7 @@ import EmptyLayout from './layouts/empty'
 import ClientLayout from './layouts/client'
 import Login from './pages/login'
 import SignUp from './pages/signup'
+import SearchResults from './pages/searchResults'
 import withAuth, { withGuest } from './hoc/withAuth'
 
 const ProtectedClientLayout = withAuth(ClientLayout)
@@ -26,7 +27,7 @@ function App() {
       <Route element={<ProtectedClientLayout />}>
         <Route path="/anime" element={<></>} />
         <Route path="/manga" element={<></>} />
-        <Route path="/search" element={<></>} />
+        <Route path="/search" element={<SearchResults />} />
       </Route>
     </Routes>
   )

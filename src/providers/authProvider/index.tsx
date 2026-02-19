@@ -53,11 +53,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 storedUsers.push(newUser);
                 localStorage.setItem("users", JSON.stringify(storedUsers));
 
-                const token = `token_${Date.now()}`;
                 const { password, ...user } = newUser;
-
-                localStorage.setItem("auth_token", token);
-                dispatch(signupSuccess({ token, user }));
+                dispatch(signupSuccess({ user }));
             } catch (error: any) {
                 const errorMessage = error?.message || "Signup failed. Please try again.";
                 console.error("Signup error:", errorMessage);

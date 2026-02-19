@@ -34,6 +34,7 @@ axiosInstance.interceptors.response.use(
 
 export const getPublicAxiosInstance = (): AxiosInstance => {
     const publicInstance: AxiosInstance = axios.create({
+        baseURL: 'https://api.jikan.moe/v4',
         headers: {
             'Content-Type': 'application/json',
         },

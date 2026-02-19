@@ -26,7 +26,26 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(getAnimeListPending());
             const endpoint = `/anime`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(getAnimeListSuccess(response.data.data));
+                const animeList = response.data.data.map((item: any) => ({
+                    id: item.mal_id,
+                    title: item.title,
+                    image: item.images?.jpg?.image_url || '',
+                    synopsis: item.synopsis,
+                    score: item.score,
+                    genres: item.genres?.map((g: any) => g.name) || [],
+                    studios: item.studios?.map((s: any) => s.name) || [],
+                    episodes: item.episodes,
+                    status: item.status,
+                    rating: item.rating,
+                    aired: item.aired?.string || '',
+                    premiered: item.season ? `${item.season} ${item.year}` : undefined,
+                    duration: item.duration,
+                    rank: item.rank,
+                    popularity: item.popularity,
+                    favorites: item.favorites,
+                    background: item.background,
+                }));
+                dispatch(getAnimeListSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
                 dispatch(getAnimeListError());
@@ -37,7 +56,26 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(searchAnimePending());
             const endpoint = `/anime?q=${encodeURIComponent(query)}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(searchAnimeSuccess(response.data.data));
+                const animeList = response.data.data.map((item: any) => ({
+                    id: item.mal_id,
+                    title: item.title,
+                    image: item.images?.jpg?.image_url || '',
+                    synopsis: item.synopsis,
+                    score: item.score,
+                    genres: item.genres?.map((g: any) => g.name) || [],
+                    studios: item.studios?.map((s: any) => s.name) || [],
+                    episodes: item.episodes,
+                    status: item.status,
+                    rating: item.rating,
+                    aired: item.aired?.string || '',
+                    premiered: item.season ? `${item.season} ${item.year}` : undefined,
+                    duration: item.duration,
+                    rank: item.rank,
+                    popularity: item.popularity,
+                    favorites: item.favorites,
+                    background: item.background,
+                }));
+                dispatch(searchAnimeSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
                 dispatch(searchAnimeError());
@@ -100,5 +138,11 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
 }
 
 export const useAnime = () => useContext(AnimeStateContext);
-export const useAnimeActions = () => useContext(AnimeActionContext);
+export const useAnimeActions = () => {
+    const context = useContext(AnimeActionContext);
+    if (!context) {
+        throw new Error("useAnimeActions must be used within an AnimeProvider");
+    }
+    return context;
+};
 

@@ -2,7 +2,7 @@ import React from 'react';
 import type { FormProps } from 'antd';
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useStyles } from './style/style';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthActions } from 'src/providers/authProvider';
 
 type FieldType = {
@@ -65,6 +65,15 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
           <Button type="primary" htmlType="submit" className={styles.button}>
             Submit
           </Button>
+        </Form.Item>
+
+        <Form.Item label={null}>
+          <span style={{ color: '#eeeeee' }}>
+            Don't have an account?{' '}
+            <Link to="/signup" style={{ color: '#00ADB5', fontWeight: 'bold' }}>
+              Sign Up
+            </Link>
+          </span>
         </Form.Item>
       </Form>
     </div>
