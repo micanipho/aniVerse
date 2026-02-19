@@ -1,6 +1,6 @@
 import { getPublicAxiosInstance } from "src/utils/axiosInstance";
 import { INITIAL_STATE, AnimeActionContext, AnimeStateContext } from "./context";
-import { useReducer, useMemo } from "react";
+import { useReducer, useMemo, useContext } from "react";
 import { AnimeReducer } from "./reducer";
 import {getAnimeListSuccess, getAnimeByIdPending, getAnimeByIdSuccess, getAnimeByIdError, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, filterAnimeByScoreSuccess, filterAnimeByScoreError, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByScorePending, filterAnimeByStatusSuccess, filterAnimeByStatusError, filterAnimeByStatusPending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending } from "./actions";
 
@@ -98,3 +98,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
         </AnimeStateContext.Provider>
     );
 }
+
+export const useAnime = () => useContext(AnimeStateContext);
+export const useAnimeActions = () => useContext(AnimeActionContext);
+

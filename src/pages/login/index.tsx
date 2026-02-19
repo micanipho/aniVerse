@@ -1,24 +1,33 @@
 import React from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useStyles } from './style/style';
+import { useNavigate } from 'react-router-dom';
+import { useAuthActions } from 'src/providers/authProvider';
 
 type FieldType = {
   username?: string;
   password?: string;
-  remember?: string;
-};
-
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo);
+  remember?: boolean;
 };
 
 const Login: React.FC = () => {
   const { styles } = useStyles();
+  const navigate = useNavigate();
+  const { login } = useAuthActions();
+
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    try {
+        login({ username: values.username!, password: values.password! });
+        message.success("Login successful");
+        navigate("/search");
+    } catch (error: any) {
+        message.error(error?.message || "Invalid credentials");
+    }
+};
+const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
 
   return (
     <div className={styles.loginForm}>
