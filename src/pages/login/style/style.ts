@@ -18,6 +18,27 @@ export const useStyles = createStyles({
   input: css`
     color: white;
     font-size: 1.2rem;
+    background-color: #393e46 !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: #393e46 !important;
+    }
+
+    &.ant-input-password {
+      background-color: #393e46 !important;
+
+      &:hover,
+      &:focus-within {
+        background-color: #393e46 !important;
+      }
+
+      input {
+        color: white;
+        background-color: #393e46 !important;
+      }
+    }
   `,
 
   button: css`

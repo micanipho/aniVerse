@@ -1,7 +1,9 @@
 import React from 'react';
 import type { FormProps } from 'antd';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useStyles } from '../login/style/style';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuthActions } from 'src/providers/authProvider';
 
 type FieldType = {
   firstName?: string;
@@ -11,16 +13,29 @@ type FieldType = {
   remember?: string;
 };
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-  console.log('Success:', values);
-};
-
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
-
 const SignUp: React.FC = () => {
   const { styles } = useStyles();
+  const navigate = useNavigate();
+  const { signup } = useAuthActions();
+
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    try {
+      signup({
+        firstName: values.firstName!,
+        lastName: values.lastName!,
+        username: values.username!,
+        password: values.password!,
+      });
+      message.success("Account created! Please log in.");
+      navigate("/login");
+    } catch (error: any) {
+      message.error(error?.message || "Signup failed");
+    }
+  };
+
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
   return (
     <div className={styles.loginForm}>
@@ -73,9 +88,19 @@ const SignUp: React.FC = () => {
             Submit
           </Button>
         </Form.Item>
+
+        <Form.Item label={null}>
+          <span style={{ color: '#eeeeee' }}>
+            Already have an account?{' '}
+            <Link to="/login" style={{ color: '#00ADB5', fontWeight: 'bold' }}>
+              Login
+            </Link>
+          </span>
+        </Form.Item>
       </Form>
     </div>
   );
 };
 
 export default SignUp;
+
