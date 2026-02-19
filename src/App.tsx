@@ -30,8 +30,7 @@ function App() {
         <Route path="/search" element={<SearchResults />} />
       </Route>
     </Routes>
-  )
-}
+  )}
 
 export default App
 
