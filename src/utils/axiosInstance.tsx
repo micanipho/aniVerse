@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosError } from 'axios';
 
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: `${import.meta.env.BACKEND_API_URL}`,
+    baseURL: `${import.meta.env.VITE_BACKEND_API_URL}`,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -34,6 +34,7 @@ axiosInstance.interceptors.response.use(
 
 export const getPublicAxiosInstance = (): AxiosInstance => {
     const publicInstance: AxiosInstance = axios.create({
+        baseURL: `${import.meta.env.VITE_BACKEND_API_URL}`,
         headers: {
             'Content-Type': 'application/json',
         },

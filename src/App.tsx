@@ -24,7 +24,6 @@ function App() {
         <Route path="/search" element={<></>} />
       </Route>
     </Routes>
-  )
-}
+  )}
 
-export default App
+export default App;
