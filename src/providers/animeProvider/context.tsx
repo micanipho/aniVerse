@@ -4,23 +4,21 @@ export interface IAnime {
     id: number;
     title: string;
     image: string;
-    synopsis: string;
-    score: number;
+    synopsis?: string;
+    score?: number;
     genres: string[];
     studios: string[];
-    episodes: number;
+    episodes?: number;
     status: string;
     rating: string;
     aired: string;
-    premiered: string;
+    premiered?: string;
     duration: string;
-    rank: number;
-    popularity: number;
+    rank?: number;
+    popularity?: number;
     favorites: number;
-    background: string;
-    animeList: IAnime[]
+    background?: string;
 }
-
 export interface IAnimeStateContext{
     animeList?: IAnime[];
     isPending: boolean;

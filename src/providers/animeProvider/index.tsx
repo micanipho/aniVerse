@@ -35,7 +35,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
 
         const searchAnime = async(query: string) => {   
             dispatch(searchAnimePending());
-            const endpoint = `/anime?q=${query}`;
+            const endpoint = `/anime?q=${encodeURIComponent(query)}`;
             await publicInstance.get(endpoint).then((response) => {
                 dispatch(searchAnimeSuccess(response.data));
             }).catch((error) => {
@@ -43,7 +43,6 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
                 dispatch(searchAnimeError());
             });
         };
-
         const filterAnimeByGenre = async(genre: string) => {
             dispatch(filterAnimeByGenrePending());
             const endpoint = `/anime?genre=${genre}`;

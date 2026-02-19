@@ -28,15 +28,14 @@ export const Navbar = () => {
             <ul className={styles.ul}>
                 {menuItems.map((item) => (
                     <li className={styles.li} key={item.name}>
-                        <Link 
-    to={item.path} 
-    className={cx(styles.link, { 
-        [styles.activeLink]: location.pathname === item.path 
-    })}
->
-    {item.name}
-</Link>
-                    </li>
+                        <Link
+                            to={item.path}
+                            className={cx(styles.link, {
+                                [styles.activeLink]: location.pathname === item.path,
+                            })}
+                        >
+                            {item.name}
+                        </Link>                    </li>
                 ))}
             </ul>
         </nav>
