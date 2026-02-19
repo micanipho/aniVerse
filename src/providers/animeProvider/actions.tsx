@@ -101,8 +101,8 @@ export const filterAnimeByScorePending = createAction<IAnimeStateContext>(AnimeA
 export const deleteAnimeByNameError = createAction<IAnimeStateContext>(AnimeActionEnums.deleteAnimeByNameError  ,
     () => ({isError: true, isPending: false, isSuccess: false})
 );
-export const deleteAnimeByNameSuccess = createAction<IAnimeStateContext>(AnimeActionEnums.deleteAnimeByNameSuccess,
-    () => ({isError: false, isPending: false, isSuccess: true})
+export const deleteAnimeByNameSuccess = createAction<IAnimeStateContext, IAnime>(AnimeActionEnums.deleteAnimeByNameSuccess,
+    (anime: IAnime) => ({isError: false, isPending: false, isSuccess: true, anime})
 );
 export const deleteAnimeByNamePending = createAction<IAnimeStateContext>(AnimeActionEnums.deleteAnimeByNamePending,
     () => ({isError: false, isPending: true, isSuccess: false})

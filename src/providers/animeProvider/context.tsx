@@ -46,6 +46,6 @@ export const INITIAL_STATE: IAnimeStateContext = {
     isSuccess: false,
 }
 
-export const AnimeContext = createContext<IAnimeStateContext>(INITIAL_STATE);
+export const AnimeStateContext = createContext<IAnimeStateContext>(INITIAL_STATE);
 
 export const AnimeActionContext = createContext<IAnimeActionContext | null>(null);
