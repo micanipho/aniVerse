@@ -21,7 +21,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "sourceMap": true
   },
   "include": ["src"]
 }
