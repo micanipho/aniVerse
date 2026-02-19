@@ -34,6 +34,7 @@ axiosInstance.interceptors.response.use(
 
 export const getPublicAxiosInstance = (): AxiosInstance => {
     const publicInstance: AxiosInstance = axios.create({
+        baseURL: `${import.meta.env.VITE_BACKEND_API_URL}`,
         headers: {
             'Content-Type': 'application/json',
         },

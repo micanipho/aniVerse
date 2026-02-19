@@ -14,7 +14,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(getAnimeByIdPending());
             const endpoint = `/anime/${id}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(getAnimeByIdSuccess(response.data));
+                dispatch(getAnimeByIdSuccess(response.data.data));
             }).catch((error) => {   
                 console.error(error);
                 dispatch(getAnimeByIdError());
@@ -26,7 +26,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(getAnimeListPending());
             const endpoint = `/anime`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(getAnimeListSuccess(response.data));
+                dispatch(getAnimeListSuccess(response.data.data));
             }).catch((error) => {
                 console.error(error);
                 dispatch(getAnimeListError());
@@ -37,7 +37,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(searchAnimePending());
             const endpoint = `/anime?q=${encodeURIComponent(query)}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(searchAnimeSuccess(response.data));
+                dispatch(searchAnimeSuccess(response.data.data));
             }).catch((error) => {
                 console.error(error);
                 dispatch(searchAnimeError());
@@ -47,7 +47,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(filterAnimeByGenrePending());
             const endpoint = `/anime?genre=${genre}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(filterAnimeByGenreSuccess(response.data));
+                dispatch(filterAnimeByGenreSuccess(response.data.data));
             }).catch((error) => {
                 console.error(error);
                 dispatch(filterAnimeByGenreError());
@@ -58,7 +58,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(filterAnimeByStatusPending());
             const endpoint = `/anime?status=${status}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(filterAnimeByStatusSuccess(response.data));
+                dispatch(filterAnimeByStatusSuccess(response.data.data));
             }).catch((error) => {
                 console.error(error);
                 dispatch(filterAnimeByStatusError());
@@ -69,7 +69,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(filterAnimeByScorePending());
             const endpoint = `/anime?score=${score}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(filterAnimeByScoreSuccess(response.data));
+                dispatch(filterAnimeByScoreSuccess(response.data.data));
             }).catch((error) => {
                 console.error(error);
                 dispatch(filterAnimeByScoreError());
@@ -80,7 +80,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(deleteAnimeByNamePending());
             const endpoint = `/anime?name=${name}`;
             await publicInstance.delete(endpoint).then((response) => {
-                dispatch(deleteAnimeByNameSuccess(response.data));
+                dispatch(deleteAnimeByNameSuccess(response.data.data));
             }).catch((error) => {
                 console.error(error);
                 dispatch(deleteAnimeByNameError());

@@ -5,15 +5,16 @@ import Home from "./pages/home";
 
 function App() {
   return (
-    <AnimeProvider>
-      <div className="App">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/anime" element={<Home />} />
-        </Routes>
-      </div>
-    </AnimeProvider>
+    
+      <AnimeProvider>
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/anime" element={<Home />} />
+          </Routes>
+        </div>
+      </AnimeProvider>
   );
 }
 
