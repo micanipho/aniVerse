@@ -3,10 +3,6 @@ import { useStyles } from "./style/style";
 
 const menuItems = [
     {
-        name: "Home",
-        path: "/",
-    },
-    {
         name: "Anime",
         path: "/anime",
     },
@@ -25,6 +21,9 @@ export const Navbar = () => {
     const location = useLocation();
     return (
         <nav className={styles.nav}>
+            <Link to="/" className={styles.logo}>
+                AniVerse
+            </Link>
             <ul className={styles.ul}>
                 {menuItems.map((item) => (
                     <li className={styles.li} key={item.name}>
@@ -35,7 +34,8 @@ export const Navbar = () => {
                             })}
                         >
                             {item.name}
-                        </Link>                    </li>
+                        </Link>
+                    </li>
                 ))}
             </ul>
         </nav>
