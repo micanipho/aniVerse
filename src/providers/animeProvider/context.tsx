@@ -31,16 +31,12 @@ export interface IAnimeStateContext{
 
 export interface IAnimeActionContext{
     getAnimeList: () => void;
-    getAnimeById: (id: number) => void;
     searchAnime: (query: string) => void;
     filterAnimeByGenre: (genre: string) => void;
-    filterAnimeByStatus: (status: string) => void;
-    filterAnimeByScore: (score: number) => void;
     deleteAnimeByName: (name: string) => void;
     createAnime: (anime: IAnime) => void;
     updateAnime: (anime: IAnime) => void;
     addToFavorites: (anime: IAnime) => void;
-    updateFavorites: (id: number) => void;
     removeFromFavorites: (id: number) => void;
 }
 

@@ -3,19 +3,6 @@ import { INITIAL_STATE, IAnimeStateContext } from "./context";
 import { AnimeActionEnums } from "./actions";
 
 export const AnimeReducer = handleActions<IAnimeStateContext, IAnimeStateContext>({
-    [AnimeActionEnums.getAnimeByIdPending]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-    [AnimeActionEnums.getAnimeByIdSuccess]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-    [AnimeActionEnums.getAnimeByIdError]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-
     [AnimeActionEnums.getAnimeListPending]: (state, action) => ({
         ...state,
         ...action.payload,
@@ -51,32 +38,6 @@ export const AnimeReducer = handleActions<IAnimeStateContext, IAnimeStateContext
         ...action.payload,
     }),
     [AnimeActionEnums.filterAnimeByGenreError]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-
-    [AnimeActionEnums.filterAnimeByStatusPending]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-    [AnimeActionEnums.filterAnimeByStatusSuccess]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-    [AnimeActionEnums.filterAnimeByStatusError]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-
-    [AnimeActionEnums.filterAnimeByScorePending]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-    [AnimeActionEnums.filterAnimeByScoreSuccess]: (state, action) => ({
-        ...state,
-        ...action.payload,
-    }),
-    [AnimeActionEnums.filterAnimeByScoreError]: (state, action) => ({
         ...state,
         ...action.payload,
     }),
