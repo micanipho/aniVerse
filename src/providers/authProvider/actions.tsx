@@ -1,5 +1,5 @@
 import { createAction } from "redux-actions";
-import { IAuthStateContext, IUser } from "./context";
+import { IAuthStateContext, IAuthUser } from "./context";
 
 export enum AuthActionEnums {
     loginPending = "LOGIN_PENDING",
@@ -19,7 +19,7 @@ export const loginPending = createAction<IAuthStateContext>(
     () => ({ isAuthenticated: false, isPending: true, isError: false, isSuccess: false })
 );
 
-export const loginSuccess = createAction<IAuthStateContext, { token: string; user: IUser }>(
+export const loginSuccess = createAction<IAuthStateContext, { token: string; user: IAuthUser }>(
     AuthActionEnums.loginSuccess,
     ({ token, user }) => ({
         isAuthenticated: true,
@@ -49,7 +49,7 @@ export const signupPending = createAction<IAuthStateContext>(
     () => ({ isAuthenticated: false, isPending: true, isError: false, isSuccess: false })
 );
 
-export const signupSuccess = createAction<IAuthStateContext, { user: IUser }>(
+export const signupSuccess = createAction<IAuthStateContext, { user: IAuthUser }>(
     AuthActionEnums.signupSuccess,
     ({ user }) => ({
         isAuthenticated: false,

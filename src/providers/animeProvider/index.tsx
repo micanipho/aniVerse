@@ -1,20 +1,33 @@
 import { getPublicAxiosInstance } from "src/utils/axiosInstance";
 import { INITIAL_STATE, AnimeActionContext, AnimeStateContext, IAnime } from "./context";
-import { useReducer, useMemo, useContext } from "react";
+import { useReducer, useMemo, useContext, useEffect } from "react";
 import { AnimeReducer } from "./reducer";
-// import { useAuth } from "../authProvider";
-import {getAnimeListSuccess, getAnimeByIdPending, getAnimeByIdSuccess, getAnimeByIdError, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, filterAnimeByScoreSuccess, filterAnimeByScoreError, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByScorePending, filterAnimeByStatusSuccess, filterAnimeByStatusError, filterAnimeByStatusPending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending, createAnimePending, createAnimeSuccess, createAnimeError, updateAnimePending, updateAnimeSuccess, updateAnimeError, addToFavoritesSuccess, removeFromFavoritesSuccess } from "./actions";
+import { useAuth } from "../authProvider";
+import {getAnimeListSuccess, getAnimeByIdPending, updateFavoritesSuccess, getAnimeByIdSuccess, getAnimeByIdError, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, filterAnimeByScoreSuccess, filterAnimeByScoreError, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByScorePending, filterAnimeByStatusSuccess, filterAnimeByStatusError, filterAnimeByStatusPending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending, createAnimePending, createAnimeSuccess, createAnimeError, updateAnimePending, updateAnimeSuccess, updateAnimeError, addToFavoritesSuccess, removeFromFavoritesSuccess, setFavoritesAction } from "./actions";
+import { parseResponseData } from "src/utils/parseResponseData";
 
 
 export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
     const [state, dispatch] = useReducer(AnimeReducer, INITIAL_STATE);
-    // const user = useAuth();
+    const user = useAuth();
 
-    // useEffect(() => {
-    //     if (state.favorites) {
-    //         localStorage.setItem('favorites', JSON.stringify({...user, user: `${}`}));
-    //     }
-    // }, [state.favorites]);
+    // Load user-scoped favorites from localStorage on login, clear on logout
+    useEffect(() => {
+        if (user.user?.id) {
+            const stored = localStorage.getItem(`favorites_${user.user.id}`);
+            const favorites: IAnime[] = stored ? JSON.parse(stored) : [];
+            dispatch(setFavoritesAction(favorites));
+        } else {
+            dispatch(setFavoritesAction([]));
+        }
+    }, [user.user?.id]);
+
+    // Save favorites to localStorage scoped to current user
+    useEffect(() => {
+        if (user.user?.id && state.favorites) {
+            localStorage.setItem(`favorites_${user.user.id}`, JSON.stringify(state.favorites));
+        }
+    }, [state.favorites, user.user?.id]);
 
     const actions = useMemo(() => {
         const publicInstance = getPublicAxiosInstance();
@@ -35,25 +48,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(getAnimeListPending());
             const endpoint = `/anime`;
             await publicInstance.get(endpoint).then((response) => {
-                const animeList = response.data.data.map((item: any) => ({
-                    id: item.mal_id,
-                    title: item.title,
-                    image: item.images?.jpg?.image_url || '',
-                    synopsis: item.synopsis,
-                    score: item.score,
-                    genres: item.genres?.map((g: any) => g.name) || [],
-                    studios: item.studios?.map((s: any) => s.name) || [],
-                    episodes: item.episodes,
-                    status: item.status,
-                    rating: item.rating,
-                    aired: item.aired?.string || '',
-                    premiered: item.season ? `${item.season} ${item.year}` : undefined,
-                    duration: item.duration,
-                    rank: item.rank,
-                    popularity: item.popularity,
-                    favorites: item.favorites,
-                    background: item.background,
-                }));
+                const animeList = parseResponseData(response.data.data);
                 dispatch(getAnimeListSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
@@ -65,25 +60,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(searchAnimePending());
             const endpoint = `/anime?q=${encodeURIComponent(query)}`;
             await publicInstance.get(endpoint).then((response) => {
-                const animeList = response.data.data.map((item: any) => ({
-                    id: item.mal_id,
-                    title: item.title,
-                    image: item.images?.jpg?.image_url || '',
-                    synopsis: item.synopsis,
-                    score: item.score,
-                    genres: item.genres?.map((g: any) => g.name) || [],
-                    studios: item.studios?.map((s: any) => s.name) || [],
-                    episodes: item.episodes,
-                    status: item.status,
-                    rating: item.rating,
-                    aired: item.aired?.string || '',
-                    premiered: item.season ? `${item.season} ${item.year}` : undefined,
-                    duration: item.duration,
-                    rank: item.rank,
-                    popularity: item.popularity,
-                    favorites: item.favorites,
-                    background: item.background,
-                }));
+                const animeList = parseResponseData(response.data.data);
                 dispatch(searchAnimeSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
@@ -94,7 +71,8 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(filterAnimeByGenrePending());
             const endpoint = `/anime?genre=${genre}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(filterAnimeByGenreSuccess(response.data.data));
+                const animeList = parseResponseData(response.data.data);
+                dispatch(filterAnimeByGenreSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
                 dispatch(filterAnimeByGenreError());
@@ -105,7 +83,8 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(filterAnimeByStatusPending());
             const endpoint = `/anime?status=${status}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(filterAnimeByStatusSuccess(response.data.data));
+                const animeList = parseResponseData(response.data.data);
+                dispatch(filterAnimeByStatusSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
                 dispatch(filterAnimeByStatusError());
@@ -116,7 +95,8 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(filterAnimeByScorePending());
             const endpoint = `/anime?score=${score}`;
             await publicInstance.get(endpoint).then((response) => {
-                dispatch(filterAnimeByScoreSuccess(response.data.data));
+                const animeList = parseResponseData(response.data.data);
+                dispatch(filterAnimeByScoreSuccess(animeList));
             }).catch((error) => {
                 console.error(error);
                 dispatch(filterAnimeByScoreError());
@@ -146,6 +126,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
         const updateAnime = (anime: IAnime) => {
             dispatch(updateAnimePending());
             try {
+
                 dispatch(updateAnimeSuccess(anime));
             } catch (error) {
                 console.error(error);
@@ -157,11 +138,15 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(addToFavoritesSuccess(anime));
         };
 
+        const updateFavorites = (id: number) => {
+            dispatch(updateFavoritesSuccess(id));
+        };
+
         const removeFromFavorites = (id: number) => {
             dispatch(removeFromFavoritesSuccess(id));
         };
 
-        return {getAnimeById, getAnimeList, searchAnime, filterAnimeByGenre, filterAnimeByStatus, filterAnimeByScore, deleteAnimeByName, createAnime, updateAnime, addToFavorites, removeFromFavorites};
+        return {getAnimeById, getAnimeList, searchAnime, filterAnimeByGenre, filterAnimeByStatus, filterAnimeByScore, deleteAnimeByName, createAnime, updateAnime, addToFavorites, updateFavorites, removeFromFavorites};
     }, []);
 
     return (
