@@ -88,9 +88,65 @@ export const AnimeReducer = handleActions<IAnimeStateContext, IAnimeStateContext
     [AnimeActionEnums.deleteAnimeByNameSuccess]: (state, action) => ({
         ...state,
         ...action.payload,
+        animeList: state.animeList?.filter(
+            (anime) => anime.title !== (action.payload as any).deletedName
+        ),
     }),
     [AnimeActionEnums.deleteAnimeByNameError]: (state, action) => ({
         ...state,
         ...action.payload,
+    }),
+
+    [AnimeActionEnums.createAnimePending]: (state, action) => ({
+        ...state,
+        ...action.payload,
+    }),
+    [AnimeActionEnums.createAnimeSuccess]: (state, action) => ({
+        ...state,
+        ...action.payload,
+        animeList: [
+            ...( state.animeList || []),
+            (action.payload as any).anime,
+        ],
+    }),
+    [AnimeActionEnums.createAnimeError]: (state, action) => ({
+        ...state,
+        ...action.payload,
+    }),
+
+    [AnimeActionEnums.updateAnimePending]: (state, action) => ({
+        ...state,
+        ...action.payload,
+    }),
+    [AnimeActionEnums.updateAnimeSuccess]: (state, action) => ({
+        ...state,
+        ...action.payload,
+        animeList: state.animeList?.map((anime) =>
+            anime.id === (action.payload as any).anime?.id
+                ? (action.payload as any).anime
+                : anime
+        ),
+    }),
+    [AnimeActionEnums.updateAnimeError]: (state, action) => ({
+        ...state,
+        ...action.payload,
+    }),
+
+    [AnimeActionEnums.addToFavoritesSuccess]: (state, action) => ({
+        ...state,
+        ...action.payload,
+        favorites: [
+            ...(state.favorites || []).filter(
+                (a) => a.id !== (action.payload as any).anime?.id
+            ),
+            (action.payload as any).anime,
+        ],
+    }),
+    [AnimeActionEnums.removeFromFavoritesSuccess]: (state, action) => ({
+        ...state,
+        ...action.payload,
+        favorites: (state.favorites || []).filter(
+            (a) => a.id !== (action.payload as any).removedId
+        ),
     }),
 }, INITIAL_STATE);

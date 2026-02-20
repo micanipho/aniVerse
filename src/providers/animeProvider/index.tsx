@@ -1,12 +1,21 @@
 import { getPublicAxiosInstance } from "src/utils/axiosInstance";
-import { INITIAL_STATE, AnimeActionContext, AnimeStateContext } from "./context";
+import { INITIAL_STATE, AnimeActionContext, AnimeStateContext, IAnime } from "./context";
 import { useReducer, useMemo, useContext } from "react";
 import { AnimeReducer } from "./reducer";
-import {getAnimeListSuccess, getAnimeByIdPending, getAnimeByIdSuccess, getAnimeByIdError, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, filterAnimeByScoreSuccess, filterAnimeByScoreError, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByScorePending, filterAnimeByStatusSuccess, filterAnimeByStatusError, filterAnimeByStatusPending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending } from "./actions";
+// import { useAuth } from "../authProvider";
+import {getAnimeListSuccess, getAnimeByIdPending, getAnimeByIdSuccess, getAnimeByIdError, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, filterAnimeByScoreSuccess, filterAnimeByScoreError, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByScorePending, filterAnimeByStatusSuccess, filterAnimeByStatusError, filterAnimeByStatusPending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending, createAnimePending, createAnimeSuccess, createAnimeError, updateAnimePending, updateAnimeSuccess, updateAnimeError, addToFavoritesSuccess, removeFromFavoritesSuccess } from "./actions";
 
 
 export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
     const [state, dispatch] = useReducer(AnimeReducer, INITIAL_STATE);
+    // const user = useAuth();
+
+    // useEffect(() => {
+    //     if (state.favorites) {
+    //         localStorage.setItem('favorites', JSON.stringify({...user, user: `${}`}));
+    //     }
+    // }, [state.favorites]);
+
     const actions = useMemo(() => {
         const publicInstance = getPublicAxiosInstance();
 
@@ -114,18 +123,45 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             });
         };
 
-        const deleteAnimeByName = async(name: string) => {
+        const deleteAnimeByName = (name: string) => {
             dispatch(deleteAnimeByNamePending());
-            const endpoint = `/anime?name=${name}`;
-            await publicInstance.delete(endpoint).then((response) => {
-                dispatch(deleteAnimeByNameSuccess(response.data.data));
-            }).catch((error) => {
+            try {
+                dispatch(deleteAnimeByNameSuccess(name));
+            } catch (error) {
                 console.error(error);
                 dispatch(deleteAnimeByNameError());
-            });
+            }
         };
 
-        return {getAnimeById, getAnimeList, searchAnime, filterAnimeByGenre, filterAnimeByStatus, filterAnimeByScore, deleteAnimeByName};
+        const createAnime = (anime: IAnime) => {
+            dispatch(createAnimePending());
+            try {
+                dispatch(createAnimeSuccess(anime));
+            } catch (error) {
+                console.error(error);
+                dispatch(createAnimeError());
+            }
+        };
+
+        const updateAnime = (anime: IAnime) => {
+            dispatch(updateAnimePending());
+            try {
+                dispatch(updateAnimeSuccess(anime));
+            } catch (error) {
+                console.error(error);
+                dispatch(updateAnimeError());
+            }
+        };
+
+        const addToFavorites = (anime: IAnime) => {
+            dispatch(addToFavoritesSuccess(anime));
+        };
+
+        const removeFromFavorites = (id: number) => {
+            dispatch(removeFromFavoritesSuccess(id));
+        };
+
+        return {getAnimeById, getAnimeList, searchAnime, filterAnimeByGenre, filterAnimeByStatus, filterAnimeByScore, deleteAnimeByName, createAnime, updateAnime, addToFavorites, removeFromFavorites};
     }, []);
 
     return (

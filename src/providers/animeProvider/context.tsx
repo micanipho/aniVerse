@@ -26,6 +26,8 @@ export interface IAnimeStateContext{
     anime?: IAnime;
     isSuccess: boolean;
     searchResult?: IAnime[];
+    deletedName?: string;
+    favorites?: IAnime[];
 }
 
 export interface IAnimeActionContext{
@@ -36,12 +38,26 @@ export interface IAnimeActionContext{
     filterAnimeByStatus: (status: string) => void;
     filterAnimeByScore: (score: number) => void;
     deleteAnimeByName: (name: string) => void;
+    createAnime: (anime: IAnime) => void;
+    updateAnime: (anime: IAnime) => void;
+    addToFavorites: (anime: IAnime) => void;
+    removeFromFavorites: (id: number) => void;
 }
+
+const loadFavorites = (): IAnime[] => {
+    try {
+        const stored = localStorage.getItem('aniverse_favorites');
+        return stored ? JSON.parse(stored) : [];
+    } catch {
+        return [];
+    }
+};
 
 export const INITIAL_STATE: IAnimeStateContext = {
     isPending: false,
     isError: false,
     isSuccess: false,
+    favorites: loadFavorites(),
 }
 
 export const AnimeStateContext = createContext<IAnimeStateContext>(INITIAL_STATE);

@@ -16,6 +16,10 @@ const menuItems = [
         name: "Search",
         path: "/search",
     },
+    {
+        name: "Profile",
+        path: "/profile",
+    },
 ];
 
 export const Navbar = () => {

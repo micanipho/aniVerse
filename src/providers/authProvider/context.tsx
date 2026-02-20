@@ -1,10 +1,12 @@
 import { createContext } from "react";
+import { IAnime } from "../animeProvider/context";
 
 export interface IUser {
     id?: string;
     firstName?: string;
     lastName?: string;
     username?: string;
+    favorites?: IAnime[];
 }
 
 export interface ILoginPayload {
