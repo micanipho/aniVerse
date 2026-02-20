@@ -10,8 +10,8 @@ const ClientLayout = () => {
     return (
         <Layout style={{ minHeight: '100vh'}}>
             <Navbar />
-            <Content style={{ width: '100%' }}>
-                <div style={{ background: '#222831', padding: 2, height: '100%'}}>
+            <Content style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <div style={{ background: '#222831', padding: 2, flex: 1 }}>
                     <Outlet />
                 </div>
             </Content>
