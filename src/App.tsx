@@ -7,6 +7,7 @@ import SignUp from './pages/signup'
 import SearchResults from './pages/searchResults'
 import Profile from './pages/profile'
 import withAuth, { withGuest } from './hoc/withAuth'
+import Home from './pages/home'
 
 const ProtectedClientLayout = withAuth(ClientLayout)
 const GuestLogin = withGuest(Login)
@@ -21,7 +22,7 @@ function App() {
 
       {/* Public routes (EmptyLayout with nav) */}
       <Route element={<EmptyLayout />}>
-        <Route path="/" element={<></>} />
+        <Route path="/" element={<Home />} />
       </Route>
 
       {/* Authenticated routes — unauthenticated users redirected to /login */}

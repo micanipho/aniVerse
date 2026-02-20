@@ -64,7 +64,7 @@ const EmptyLayout = () => {
                 </nav>
             </Header>
             <Content style={{ width: '100%' }}>
-                <div style={{ background: colorBgContainer, padding: 2, borderRadius: borderRadiusLG, height: '100%' }}>
+                <div style={{ background: '#222831', padding: 2, height: '100%' }}>
                     <Outlet />
                 </div>
             </Content>

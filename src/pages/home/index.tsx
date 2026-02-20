@@ -1,28 +1,80 @@
-import { useContext, useEffect } from "react";
-import { AnimeActionContext, AnimeStateContext } from "../../providers/animeProvider/context";
+import { useEffect, useState } from "react";
+import { useStyles } from "./style/style";
+import { useAnime, useAnimeActions } from "../../providers/animeProvider";
+import { Input, Spin } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 
 const Home = () => {
-    const { getAnimeList } = useContext(AnimeActionContext)!;
-    const { animeList, isPending, isError } = useContext(AnimeStateContext);
+    const { animeList, isPending, isError } = useAnime();
+    const { styles } = useStyles();
+    const { searchAnime, getAnimeList } = useAnimeActions();
+    const [query, setQuery] = useState('');
+    
 
     useEffect(() => {
-        getAnimeList();
-    }, []);
+        const delay = setTimeout(() => {
+            if (query.trim()) {
+                searchAnime(query.trim());
+            } else {
+                getAnimeList();
+            }
+        }, 400);
 
-    if (isPending) return <div>Loading...</div>;
-    if (isError) return <div>Error loading anime.</div>;
+        return () => clearTimeout(delay);
+    }, [query]);
 
-    return (
-        <div style={{ padding: "20px" }}>
-            <h1>Anime List</h1>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "20px" }}>
+    const renderContent = () => {
+        if (isPending) {
+            return (
+                <div className={styles.loading}>
+                    <Spin size="large" />
+                </div>
+            );
+        }
+
+        if (isError) {
+            return (
+                <div className={styles.error}>
+                    Failed to load anime. Please try again later.
+                </div>
+            );
+        }
+
+        return (
+            <div className={styles.grid}>
                 {animeList?.map((anime) => (
-                    <div key={anime.id} style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "8px" }}>
-                        <img src={anime.image} alt={anime.title} style={{ width: "100%", height: "300px", objectFit: "cover" }} />
-                        <h3>{anime.title}</h3>
+                    <div key={anime.id} className={styles.card}>
+                        <img
+                            src={anime.image}
+                            alt={anime.title}
+                            className={styles.image}
+                        />
+                        <div className={styles.title}>{anime.title}</div>
                     </div>
                 ))}
             </div>
+        );
+    };
+
+
+    return (
+        <div className={styles.container}>
+            <div className={styles.searchWrapper} style={{ height: '100%' }}>
+                <Input
+                    className={styles.searchInput}
+                    placeholder="Search anime..."
+                    size="large"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    suffix={
+                        <SearchOutlined
+                            className={styles.searchIcon}
+                        />
+                    }
+                />
+            </div>
+            {renderContent()}
+
         </div>
     );
 };
