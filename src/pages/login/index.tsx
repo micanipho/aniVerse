@@ -31,11 +31,11 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 
   return (
     <div className={styles.loginForm}>
+      <h1 className={styles.title}>LOGIN</h1>
       <Form
         name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
+        layout="vertical"
+        style={{ width: '100%', maxWidth: 400 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}

@@ -3,11 +3,21 @@ import { createStyles, css } from "antd-style";
 export const useStyles = createStyles({
     loginForm: css`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #222831;
     color: white;
+    gap: 20px;
+  `,
+
+  title: css`
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #00ADB5;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
   `,
 
   label: css`

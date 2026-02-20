@@ -3,7 +3,7 @@ import { INITIAL_STATE, AnimeActionContext, AnimeStateContext, IAnime } from "./
 import { useReducer, useMemo, useContext, useEffect } from "react";
 import { AnimeReducer } from "./reducer";
 import { useAuth } from "../authProvider";
-import {getAnimeListSuccess, getAnimeByIdPending, updateFavoritesSuccess, getAnimeByIdSuccess, getAnimeByIdError, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, filterAnimeByScoreSuccess, filterAnimeByScoreError, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByScorePending, filterAnimeByStatusSuccess, filterAnimeByStatusError, filterAnimeByStatusPending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending, createAnimePending, createAnimeSuccess, createAnimeError, updateAnimePending, updateAnimeSuccess, updateAnimeError, addToFavoritesSuccess, removeFromFavoritesSuccess, setFavoritesAction } from "./actions";
+import {getAnimeListSuccess, getAnimeListPending, getAnimeListError, searchAnimeError, searchAnimeSuccess, searchAnimePending, deleteAnimeByNameSuccess, deleteAnimeByNameError, deleteAnimeByNamePending, filterAnimeByGenreSuccess, filterAnimeByGenreError, filterAnimeByGenrePending, createAnimePending, createAnimeSuccess, createAnimeError, updateAnimePending, updateAnimeSuccess, updateAnimeError, addToFavoritesSuccess, removeFromFavoritesSuccess, setFavoritesAction } from "./actions";
 import { parseResponseData } from "src/utils/parseResponseData";
 
 
@@ -32,17 +32,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
     const actions = useMemo(() => {
         const publicInstance = getPublicAxiosInstance();
 
-        const getAnimeById = async(id: number) => {
-            dispatch(getAnimeByIdPending());
-            const endpoint = `/anime/${id}`;
-            await publicInstance.get(endpoint).then((response) => {
-                dispatch(getAnimeByIdSuccess(response.data.data));
-            }).catch((error) => {   
-                console.error(error);
-                dispatch(getAnimeByIdError());
-            });
 
-        };
 
         const getAnimeList = async() => {
             dispatch(getAnimeListPending());
@@ -79,29 +69,7 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             });
         };
 
-        const filterAnimeByStatus = async(status: string) => {
-            dispatch(filterAnimeByStatusPending());
-            const endpoint = `/anime?status=${status}`;
-            await publicInstance.get(endpoint).then((response) => {
-                const animeList = parseResponseData(response.data.data);
-                dispatch(filterAnimeByStatusSuccess(animeList));
-            }).catch((error) => {
-                console.error(error);
-                dispatch(filterAnimeByStatusError());
-            });
-        };
 
-        const filterAnimeByScore = async(score: number) => {
-            dispatch(filterAnimeByScorePending());
-            const endpoint = `/anime?score=${score}`;
-            await publicInstance.get(endpoint).then((response) => {
-                const animeList = parseResponseData(response.data.data);
-                dispatch(filterAnimeByScoreSuccess(animeList));
-            }).catch((error) => {
-                console.error(error);
-                dispatch(filterAnimeByScoreError());
-            });
-        };
 
         const deleteAnimeByName = (name: string) => {
             dispatch(deleteAnimeByNamePending());
@@ -138,15 +106,13 @@ export const AnimeProvider = ({ children }: {children: React.ReactNode}) => {
             dispatch(addToFavoritesSuccess(anime));
         };
 
-        const updateFavorites = (id: number) => {
-            dispatch(updateFavoritesSuccess(id));
-        };
+
 
         const removeFromFavorites = (id: number) => {
             dispatch(removeFromFavoritesSuccess(id));
         };
 
-        return {getAnimeById, getAnimeList, searchAnime, filterAnimeByGenre, filterAnimeByStatus, filterAnimeByScore, deleteAnimeByName, createAnime, updateAnime, addToFavorites, updateFavorites, removeFromFavorites};
+        return { getAnimeList, searchAnime, filterAnimeByGenre, deleteAnimeByName, createAnime, updateAnime, addToFavorites, removeFromFavorites };
     }, []);
 
     return (
