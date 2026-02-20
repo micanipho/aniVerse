@@ -39,7 +39,18 @@ export enum AnimeActionEnums {
     updateAnimePending="UPDATE_ANIME_PENDING",
 
     addToFavoritesSuccess="ADD_TO_FAVORITES_SUCCESS",
+    addToFavoritesError="ADD_TO_FAVORITES_ERROR",
+    addToFavoritesPending="ADD_TO_FAVORITES_PENDING",
+
     removeFromFavoritesSuccess="REMOVE_FROM_FAVORITES_SUCCESS",
+    removeFromFavoritesError="REMOVE_FROM_FAVORITES_ERROR",
+    removeFromFavoritesPending="REMOVE_FROM_FAVORITES_PENDING",
+
+    updateFavoritesSuccess="UPDATE_FAVORITES_SUCCESS",
+    updateFavoritesError="UPDATE_FAVORITES_ERROR",
+    updateFavoritesPending="UPDATE_FAVORITES_PENDING",
+
+    setFavorites="SET_FAVORITES",
 }
 
 export const getAnimeListError = createAction<IAnimeStateContext>(AnimeActionEnums.getAnimeListError,
@@ -142,6 +153,12 @@ export const updateAnimePending = createAction<IAnimeStateContext>(AnimeActionEn
 export const addToFavoritesSuccess = createAction<IAnimeStateContext, IAnime>(AnimeActionEnums.addToFavoritesSuccess,
     (anime: IAnime) => ({isError: false, isPending: false, isSuccess: true, anime})
 );
+export const updateFavoritesSuccess = createAction<IAnimeStateContext, number>(AnimeActionEnums.updateFavoritesSuccess,
+    (id: number) => ({isError: false, isPending: false, isSuccess: true, id})
+);
 export const removeFromFavoritesSuccess = createAction<IAnimeStateContext, number>(AnimeActionEnums.removeFromFavoritesSuccess,
-    (removedId: number) => ({isError: false, isPending: false, isSuccess: true, removedId} as any)
+    (removedId: number) => ({isError: false, isPending: false, isSuccess: true, removedId})
+);
+export const setFavoritesAction = createAction<IAnimeStateContext, IAnime[]>(AnimeActionEnums.setFavorites,
+    (favorites: IAnime[]) => ({isError: false, isPending: false, isSuccess: true, favorites})
 );

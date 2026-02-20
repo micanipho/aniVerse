@@ -149,4 +149,9 @@ export const AnimeReducer = handleActions<IAnimeStateContext, IAnimeStateContext
             (a) => a.id !== (action.payload as any).removedId
         ),
     }),
+    [AnimeActionEnums.setFavorites]: (state, action) => ({
+        ...state,
+        ...action.payload,
+        favorites: (action.payload as any).favorites || [],
+    }),
 }, INITIAL_STATE);

@@ -1,12 +1,10 @@
 import { createContext } from "react";
-import { IAnime } from "../animeProvider/context";
 
-export interface IUser {
+export interface IAuthUser {
     id?: string;
     firstName?: string;
     lastName?: string;
     username?: string;
-    favorites?: IAnime[];
 }
 
 export interface ILoginPayload {
@@ -27,7 +25,7 @@ export interface IAuthStateContext {
     isError: boolean;
     isSuccess: boolean;
     token?: string;
-    user?: IUser;
+    user?: IAuthUser;
     errorMessage?: string;
 }
 
